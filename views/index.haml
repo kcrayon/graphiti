@@ -27,6 +27,13 @@
             + New Graph
   #container
     #view-controls
+      %label{for: 'time-frame'}
+        Time frame:
+        %select#time-frame{name: 'time-frame'}
+          %option{value: ''} graph default
+          - Graphiti.settings.time_frames.each do |name, value|
+            %option{value: value}= name
+
       %label{for: 'auto-refresh'}
         %input#auto-refresh{:name => 'auto-refresh', :type => 'checkbox', :checked => Graphiti.settings.auto_refresh['enabled'], 'data-interval' => Graphiti.settings.auto_refresh['interval']}
           Refresh every #{Graphiti.settings.auto_refresh['interval']} seconds

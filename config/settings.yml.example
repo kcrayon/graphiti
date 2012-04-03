@@ -10,6 +10,15 @@ fonts:
 auto_refresh:
   enabled: true # checked by default?
   interval: 60 # seconds
+time_frames:
+  last 30 min: -30min
+  last 3 hours: -3h
+  last 12 hours: -12h
+  last 24 hours: -24h
+  yesterday: -48h,-24h
+  last 7 days: -7d
+  previous week: -14d,-7d
+  last month: -30d
 default_options:
   title: "New Graph"
   from: -7d

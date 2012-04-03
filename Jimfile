@@ -12,7 +12,8 @@
       "extensions",
       "graph",
       "app",
-      "refresh"
+      "refresh",
+      "time-frame"
     ]
   }
 }

@@ -107,7 +107,10 @@ Graphiti.Graph.prototype = {
   buildURL: function(){
     var url = this.urlBase;
     var parts = [];
-    $.each(this.options, function(key,value){
+    // Override graph options with time frame
+    var timeFrameOptions = Graphiti.timeFrameOptions();
+    var opts = $.extend({}, this.options, timeFrameOptions);
+    $.each(opts, function(key,value){
       parts.push(key + "=" + encodeURIComponent(value));
     });
     $.each(this.parsedTargets, function(c, target){
