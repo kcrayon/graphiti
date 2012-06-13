@@ -13260,7 +13260,7 @@ Graphiti = window.Graphiti || {};
 
 Graphiti.startRefresh = function(seconds){
   this.refreshTimer = setInterval(function(){
-    $('#graphs-pane div.graph img.ggraph').each(function() {
+    $('#graphs-pane div.graph img.ggraph, div#graph-preview img').each(function() {
       var jqt = $(this);
       var src = jqt.attr('src');
       Sammy.log("Refreshing from", src);
@@ -13288,4 +13288,3 @@ Graphiti.setRefresh = function(){
 
 $(Graphiti.setRefresh.bind(Graphiti));
 $("#auto-refresh").change(Graphiti.setRefresh.bind(Graphiti));
-
