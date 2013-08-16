@@ -33,7 +33,7 @@ class Metric
       if prefix.nil?
         @metrics = json 
       elsif prefix.kind_of?(Array)
-        @metrics = json.grep(/^[#{prefix.map! { |k| Regexp.escape k }.join("|")}]/)
+        @metrics = json.grep(/^(#{prefix.map! { |k| Regexp.escape k }.join("|")})/)
       else
         @metrics = json.grep(/^#{Regexp.escape prefix}/)
       end
