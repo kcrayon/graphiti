@@ -12939,7 +12939,9 @@ var app = Sammy('body', function() {
             }
             for (; i < l; i++) {
               graph = graphs[i];
-              graph_obj = new Graphiti.Graph(JSON.parse(graph.json));
+              graphJson = JSON.parse(graph.json);
+              graphJson.options.hideLegend = true;
+              graph_obj = new Graphiti.Graph(graphJson);
 
               $graph
               .clone()
