@@ -108,10 +108,10 @@ Graphiti.Graph.prototype = {
     var url = this.urlBase;
     var parts = [];
     $.each(this.options, function(key,value){
-      parts.push(key + "=" + encodeURIComponent(value));
+      parts.push(key + "=" + value);
     });
     $.each(this.parsedTargets, function(c, target){
-      parts.push("target=" + encodeURIComponent(target));
+      parts.push("target=" + target);
     });
     parts.push('_timestamp_=' + new Date().getTime());
     return url + parts.join('&') + '#.png';
