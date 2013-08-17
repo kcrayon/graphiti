@@ -1,4 +1,5 @@
 ---
+app_name: Graphiti
 graphiti_base_url: http://graphiti.pp.local
 graphite_base_url: http://graphite01.pp.local
 #graphite_base_url: https://user:pass@graphite01.pp.local
