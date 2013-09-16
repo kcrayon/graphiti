@@ -60,6 +60,9 @@ class Metric
     else
       puts "Error fetching #{url}. #{response.inspect}"
     end
+    @metrics.collect { |metric| 
+      metric.gsub(/^\./, '')
+    }
     tops = {}
     @metrics.each do |m|
       tops[m.split(".").first] = nil
