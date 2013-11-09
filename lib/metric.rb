@@ -47,9 +47,10 @@ class Metric
   def self.get_metrics_list(prefix = Graphiti.settings.metric_prefix)
     url = "#{Graphiti.settings.graphite_base_url}/metrics/index.json"
     puts "Getting #{url}"
-    response = Typhoeus::Request.get(url)
-    if response.success?
-      json = Yajl::Parser.parse(response.body)
+	httpclient = HTTPClient.new
+    response = httpclient.get(url)
+    if response.ok?
+      json = JSON.parse(response.content)
       if prefix.nil?
         @metrics = json 
       elsif prefix.kind_of?(Array)
@@ -58,7 +59,8 @@ class Metric
         @metrics = json.grep(/^#{Regexp.escape prefix}/)
       end
     else
-      puts "Error fetching #{url}. #{response.inspect}"
+      # puts "Error fetching #{url}. #{response.inspect}"
+	  puts "Error fetching #{url}"
     end
     @metrics.collect! { |metric| 
       metric.gsub(/^\./, '')

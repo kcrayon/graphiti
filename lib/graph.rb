@@ -41,9 +41,10 @@ class Graph
     graph = find(uuid)
     return nil if !graph
     url = make_url(graph['url'])
-    response = Typhoeus::Request.get(url, :timeout => 20000)
-    return false if !response.success?
-    graph_data = response.body
+	httpclient = HTTPClient.new
+    response = httpclient.get(url)
+    return false if !response.ok?
+    graph_data = response.content
     time = (Time.now.to_f * 1000).to_i
     filename = "/snapshots/#{uuid}/#{time}.png"
     image_url = send("store_on_#{service}", graph_data, filename)

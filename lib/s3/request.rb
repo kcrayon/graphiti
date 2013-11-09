@@ -68,19 +68,21 @@ module S3
     # @return [Boolean] true if the request is successful
     def run
       logger.info "-- S3::Request #{method} #{url}"
-      response = Typhoeus::Request.send(method, url, :body => body, :headers => headers)
-      if RACK_ENV == 'test' && !response.mock
-        warn "Actually making a request to s3 in a test - you probably dont want to do that"
-      end
-      logger.info "-- S3::Request Response success? #{response.success?} response code: #{response.code}"
-      if response.success?
+      httpclient = HTTPClient.new
+      response = httpclient.request(method, url, nil, body, headers)
+	  # To Do: fix this
+      # if RACK_ENV == 'test' && !response.mock
+        # warn "Actually making a request to s3 in a test - you probably dont want to do that"
+      # end
+      logger.info "-- S3::Request Response success? #{response.ok?} response code: #{response.status}"
+      if response.ok?
         return true
-      elsif response.timed_out?
-        reason = "timed out"
-      elsif response.code == 0
-        reason = "Got a 0 response code: " + response.curl_error_message
+      # elsif response.timed_out?
+        # reason = "timed out"
+      elsif response.status == 0
+        reason = "Got a 0 response code: " + response.reason
       else
-        reason = "HTTP request failed: " + response.code.to_s
+        reason = "HTTP request failed: " + response.status.to_s
       end
       logger.error "Request to upload #{url} failed: #{reason}"
       false
