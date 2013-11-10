@@ -26,28 +26,26 @@ We started talking to some smart people that were using Graphite in their own wa
 * @codahale's Metrics Talk: http://pivotallabs.com/talks/139-metrics-metrics-everywhere 
 * @quirkey's talk about metrics @paperlesspost: http://aq.iriscouch.com/swinger/_design/swinger/index.html#/preso/aq-mdd/display/1
 * Etsy on Statsd + Graphite: http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/
-* Our statsd fork: https://github.com/paperlesspost/statsd
-* Github's statsd-ruby fork: https://github.com/github/statsd-ruby
 
 ## Technology
 
-Graphiti is a very simple ruby 1.9.2/Sinatra (http://sinatrarb.com) backend that stores the Graph + Dashboard data in Redis (Snapshots are stored in S3). On top of this REST backend is a Sammy.js (http://sammyjs.org) application that handles the graph generation and manipulation. It also uses an embedded version of the Ace (http://ace.ajax.org/) for the editor interface. It uses Jim (http://github.com/quirkey/jim) to bundle and compress the JavaScript. The CSS/SCSS is created with the help of the awesome Compass framework (http://compass-style.org).
+This fork of Graphiti is an attempt to port the original to jruby.
+Graphiti describes itself as a very simple ruby 1.9.2/Sinatra (http://sinatrarb.com) backend that stores the Graph + Dashboard data in Redis (Snapshots are stored in S3). On top of this REST backend is a Sammy.js (http://sammyjs.org) application that handles the graph generation and manipulation. It also uses an embedded version of the Ace (http://ace.ajax.org/) for the editor interface. It uses Jim (http://github.com/quirkey/jim) to bundle and compress the JavaScript. The CSS/SCSS is created with the help of the awesome Compass framework (http://compass-style.org).)
 
 ### Dependencies
 
-* Ruby 1.9.2
+* jRuby > 1.7 (Ruby 1.9.2 compatibility)
 * Bundler (~>1.0)
 * Graphite (>=0.9.9) (and your data in graphite. The graphite URL API must be accessible from the same location as Graphiti and through the browser).
 * Redis (>2)
-* Unicorn
-* RubyGems and various Gems (see Gemfile)
+* jruby gems (always install gems with jruby -S gem install)
 
 ## Setup/Installation
 
 * Clone the repository
 * Make copies of the config/*.yml.example files application configuration.
 * Bundle: `bundle install`
-* Run: `bundle exec unicorn -c config/unicorn.rb -E production -D`
+* Run: `bundle exec puma -b tcp://0.0.0.0:81`
 * Generate the metrics list: `bundle exec rake graphiti:metrics` (In order to make searching through your list of metrics fast, Graphiti fetches and caches the full list in Redis. We put this in a rake task that you can run in the background and set up on a cron.)
 * A Capfile and `config/deploy.rb` is provided for reference (though it might work for you).
 
