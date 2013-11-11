@@ -58,23 +58,25 @@ Run Puma:
 
 ## Other notes:
 
-	Currently the jim gem, which performs javascript compression, is disabled.
-	Wro4j can be used instead: 'https://code.google.com/p/wro4j/wiki/wro4jRunner'
+	The originally Graphiti used the Jim gem to perform compression. The has been replaced by Wro4j 'https://code.google.com/p/wro4j/wiki/wro4jRunner'
+
 	java -jar wro4j-runner-1.4.5-jar-with-dependencies.jar -m
+
+	wro.xml file:
 	
-	<groups xmlns="/public/js">
-		<group name="default">
-			<js>./libs/jquery-1.6.4.js</js>
-			<js>./libs/keymaster.js</js>
-			<js>./libs/sammy-0.7.0.js</js>
-			<js>./libs/sammy.nested_params-0.7.0.js</js>
-			<js>./libs/sammy.storage-0.7.1pre.js</js>
-			<js>./libs/jscolor.js</js>
-			<js>extensions.js</js>
-			<js>graph.js</js>
-			<js>app.js</js>
-			<js>refresh.js</js>
-			<js>time-frame.js</js>
-		</group>
-	</groups>
+		<groups xmlns="public/js">
+			<group name="default">
+				<js>public/js/libs/jquery-1.6.4.js</js>
+				<js>public/js/libs/keymaster.js</js>
+				<js>public/js/libs/sammy-0.7.0.js</js>
+				<js>public/js/libs/sammy.nested_params-0.7.0.js</js>
+				<js>public/js/libs/sammy.storage-0.7.1pre.js</js>
+				<js>public/js/libs/jscolor.js</js>
+				<js>public/js/extensions.js</js>
+				<js>public/js/graph.js</js>
+				<js>public/js/app.js</js>
+				<js>public/js/refresh.js</js>
+				<js>public/js/time-frame.js</js>
+			</group>
+		</groups>
 

@@ -37,6 +37,7 @@ class Graphiti < Sinatra::Base
       config.sass_dir = File.join(settings.views, 'stylesheets')
       config.output_style = :compact
     end
+	# set :server, :puma
     set :haml, :format => :html5
     set :scss, Compass.sass_engine_options
     set :method_override, true

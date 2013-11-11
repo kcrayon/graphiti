@@ -1,18 +1,19 @@
 $:.unshift(File.expand_path('./lib'))
+require 'puma/capistrano'
 
 set :application, "graphiti"
-set :deploy_to, "/opt/app/graphiti"
-set :deploy_via, :remote_cache
-set :scm, :git
-set :repository, "git@github.com:paperlesspost/graphiti.git"
-set :user, "paperless"
-set :use_sudo, false
-set :normalize_asset_timestamps, false
-set :rvm_ruby_string, 'default'
+set :deploy_to, "./graphiti"
+# set :deploy_via, :remote_cache
+# set :scm, :git
+# set :repository, "git@github.com:paperlesspost/graphiti.git"
+# set :user, "paperless"
+# set :use_sudo, false
+# set :normalize_asset_timestamps, false
 
 namespace :deploy do
   task :start, :roles => :app, :except => { :no_release => true } do
-    run "bundle exec puma -b tcp://0.0.0.0:81 -E production -D"
+    run "bundle exec puma -t 1:16 -b tcp://0.0.0.0:81"
+	# run "bundle exec puma -q -d -t 1:16 -b tcp://0.0.0.0:81"
   end
   task :stop, :roles => :app, :except => { :no_release => true } do
     # run "kill `cat #{unicorn_pid}`"
@@ -55,6 +56,6 @@ namespace :bundler do
     # }
   end
 end
-after "deploy:update_code", "graphiti:link_configs"
-after "deploy:update_code", "bundler:install_gems"
+# after "deploy:update_code", "graphiti:link_configs"
+# after "deploy:update_code", "bundler:install_gems"
 after "deploy:update_code", "graphiti:compress"
