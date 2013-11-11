@@ -62,8 +62,8 @@ Run Puma:
 	Wro4j can be used instead: 'https://code.google.com/p/wro4j/wiki/wro4jRunner'
 	java -jar wro4j-runner-1.4.5-jar-with-dependencies.jar -m
 	
-	<groups xmlns="http://www.isdc.ro/wro">
-		<group name=".">
+	<groups xmlns="/public/js">
+		<group name="default">
 			<js>./libs/jquery-1.6.4.js</js>
 			<js>./libs/keymaster.js</js>
 			<js>./libs/sammy-0.7.0.js</js>
