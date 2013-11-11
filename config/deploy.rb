@@ -9,11 +9,6 @@ set :user, "paperless"
 set :use_sudo, false
 set :normalize_asset_timestamps, false
 set :rvm_ruby_string, 'default'
-set :rvm_bin_path, '/usr/local/bin'
-
-set :unicorn_binary, "/usr/local/rvm/gems/ruby-1.9.2-p0/bin/unicorn"
-set :unicorn_config, "#{current_path}/config/unicorn.rb"
-set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
 
 namespace :deploy do
   task :start, :roles => :app, :except => { :no_release => true } do
@@ -45,13 +40,14 @@ namespace :graphiti do
   end
 
   task :compress do
-    # run "cd #{release_path} && bundle exec jim compress"
+    run "java -jar wro4j-runner-1.4.5-jar-with-dependencies.jar -m"
   end
 end
 
 namespace :bundler do
   desc "Automatically installed your bundled gems if a Gemfile exists"
   task :install_gems, :roles => :web do
+	run "bundle install --without test development --deployment"
     # run %{if [ -f #{release_path}/Gemfile ]; then cd #{release_path} &&
      # mkdir -p #{release_path}/vendor &&
       # ln -nfs #{shared_path}/vendor/bundle #{release_path}/vendor/bundle &&

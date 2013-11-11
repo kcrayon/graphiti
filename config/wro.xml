@@ -1,0 +1,15 @@
+<groups xmlns="/public/js">
+	<group name="default">
+		<js>/public/js/libs/jquery-1.6.4.js</js>
+		<js>/public/js/libs/keymaster.js</js>
+		<js>/public/js/libs/sammy-0.7.0.js</js>
+		<js>/public/js/libs/sammy.nested_params-0.7.0.js</js>
+		<js>/public/js/libs/sammy.storage-0.7.1pre.js</js>
+		<js>/public/js/libs/jscolor.js</js>
+		<js>/public/js/extensions.js</js>
+		<js>/public/js/graph.js</js>
+		<js>/public/js/app.js</js>
+		<js>/public/js/refresh.js</js>
+		<js>/public/js/time-frame.js</js>
+	</group>
+</groups>
