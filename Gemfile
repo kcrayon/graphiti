@@ -1,3 +1,5 @@
+source 'https://rubygems.org'
+
 gem "rake"
 gem "rack"
 gem "sinatra"
@@ -12,3 +14,4 @@ gem "json"
 gem "json_pure"
 gem "pony"
 gem "puma"
+gem "unicorn"
