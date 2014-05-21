@@ -25,12 +25,20 @@ class Graph
     nil
   end
 
-  # Given a URL or a URI, append the current graphite_base_url
-  def self.make_url(uri)
-    uri = if uri !~ /^\//
-      URI.parse(uri).request_uri
-    end
-    Graphiti.graphite_base_url + uri.gsub(/\#.*$/,'')
+  # Fetch and return the image data of a graph
+  def self.get_graph_data(uuid)
+    return nil unless graph = find(uuid)
+
+    orig_url = URI(graph["url"])
+    url = URI(Graphiti.graphite_base_url + [orig_url.path, orig_url.query].compact.join("?"))
+
+    httpclient = HTTPClient.new
+    httpclient.set_auth(nil, url.user, url.password) if url.userinfo
+    response = httpclient.get(url)
+
+    return false if !response.ok?
+
+    response.content
   end
 
   def self.snapshot(uuid)
@@ -38,13 +46,11 @@ class Graph
     if !snapshot_service?(service)
       raise "'#{service}' is not a valid snapshot service (must be one of #{SNAPSHOT_SERVICES.join(', ')})"
     end
-    graph = find(uuid)
-    return nil if !graph
-    url = make_url(graph['url'])
-	httpclient = HTTPClient.new
-    response = httpclient.get(url)
-    return false if !response.ok?
-    graph_data = response.content
+
+    if !(graph_data = get_graph_data(uuid))
+      raise "Failed to get graph data for #{uuid}"
+    end
+
     time = (Time.now.to_f * 1000).to_i
     filename = "/snapshots/#{uuid}/#{time}.png"
     image_url = send("store_on_#{service}", graph_data, filename)
@@ -98,5 +104,4 @@ class Graph
   def self.make_uuid(graph_json)
     Digest::SHA1.hexdigest(graph_json.inspect + Time.now.to_f.to_s + rand(100).to_s)[0..10]
   end
-
 end

@@ -61,6 +61,11 @@ class Graphiti < Sinatra::Base
     json Graph.find(params[:uuid])
   end
 
+  get '/graphs/:uuid.png' do
+    content_type 'image/png'
+    Graph.get_graph_data(params[:uuid])
+  end
+
   get '/metrics.js' do
     json :metrics => Metric.find(params[:q])
   end
