@@ -45,10 +45,13 @@ class Metric
 
   private
   def self.get_metrics_list(prefix = Graphiti.settings.metric_prefix)
-    url = "#{Graphiti.settings.graphite_base_url}/metrics/index.json"
+    url = URI.parse("#{Graphiti.settings.graphite_base_url}/metrics/index.json")
+
     puts "Getting #{url}"
-	httpclient = HTTPClient.new
+    httpclient = HTTPClient.new
+    httpclient.set_auth(nil, url.user, url.password) if url.userinfo
     response = httpclient.get(url)
+
     if response.ok?
       json = JSON.parse(response.content)
       if prefix.nil?
