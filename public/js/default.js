@@ -12612,10 +12612,10 @@ Graphiti.Graph.prototype = {
     var timeFrameOptions = Graphiti.timeFrameOptions();
     var opts = $.extend({}, this.options, timeFrameOptions);
     $.each(opts, function(key,value){
-      parts.push(key + "=" + encodeURIComponent(value));
+      parts.push(key + "=" + value);
     });
     $.each(this.parsedTargets, function(c, target){
-      parts.push("target=" + encodeURIComponent(target));
+      parts.push("target=" + target);
     });
     parts.push('_timestamp_=' + new Date().getTime());
     return url + parts.join('&') + '#.png';
@@ -12766,9 +12766,14 @@ var app = Sammy('body', function() {
       return text;
     },
     graphPreview: function(options) {
-      // get width/height from img
+      // Resize container height to fit graph
       this.session('lastPreview', options, function() {
         var $img = $("#graph-preview img"), $url = $('#graph-url input');
+        var $preview = $("#graph-preview");
+        var height = options["options"]["height"];
+        $preview.height(height);
+        $img.height(height);
+
         var graph = new Graphiti.Graph(options);
         graph.image($img);
         $url.val(graph.buildURL());
@@ -12939,9 +12944,7 @@ var app = Sammy('body', function() {
             }
             for (; i < l; i++) {
               graph = graphs[i];
-              graphJson = JSON.parse(graph.json);
-              graphJson.options.hideLegend = true;
-              graph_obj = new Graphiti.Graph(graphJson);
+              graph_obj = new Graphiti.Graph(JSON.parse(graph.json));
 
               $graph
               .clone()
@@ -13308,7 +13311,6 @@ Graphiti = window.Graphiti || {};
 
 Graphiti.initTimeFramePicker = function(){
   var tf = Graphiti.getTimeFrame();
-  console.log("init to " + tf);
   if (tf) $("#time-frame option[value='" + tf + "']").attr('selected', 'selected');
 
   $("#time-frame").change(Graphiti.setTimeFrame);
@@ -13333,4 +13335,3 @@ Graphiti.setTimeFrame = function(){
 };
 
 $(Graphiti.initTimeFramePicker);
-

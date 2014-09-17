@@ -88,9 +88,14 @@ var app = Sammy('body', function() {
       return text;
     },
     graphPreview: function(options) {
-      // get width/height from img
+      // Resize container height to fit graph
       this.session('lastPreview', options, function() {
         var $img = $("#graph-preview img"), $url = $('#graph-url input');
+        var $preview = $("#graph-preview");
+        var height = options["options"]["height"];
+        $preview.height(height);
+        $img.height(height);
+
         var graph = new Graphiti.Graph(options);
         graph.image($img);
         $url.val(graph.buildURL());
