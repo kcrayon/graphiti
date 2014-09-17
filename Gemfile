@@ -15,3 +15,5 @@ gem "json_pure"
 gem "pony"
 gem "puma"
 gem "unicorn"
+gem "jim"
+gem "rubyzip", "< 1.0.0" # Jim needs this but doesn't know it
