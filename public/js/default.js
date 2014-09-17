@@ -12612,10 +12612,10 @@ Graphiti.Graph.prototype = {
     var timeFrameOptions = Graphiti.timeFrameOptions();
     var opts = $.extend({}, this.options, timeFrameOptions);
     $.each(opts, function(key,value){
-      parts.push(key + "=" + value);
+      parts.push(key + "=" + encodeURIComponent(value));
     });
     $.each(this.parsedTargets, function(c, target){
-      parts.push("target=" + target);
+      parts.push("target=" + encodeURIComponent(target));
     });
     parts.push('_timestamp_=' + new Date().getTime());
     return url + parts.join('&') + '#.png';
