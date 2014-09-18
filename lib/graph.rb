@@ -6,21 +6,60 @@ class Graph
 
   SNAPSHOT_SERVICES = ['s3', 'fs']
 
-  def self.save(uuid = nil, graph_json)
+  def self.save(uuid=nil, graph_json)
     uuid ||= make_uuid(graph_json)
-    redis.hset "graphs:#{uuid}", "title", graph_json[:title]
-    redis.hset "graphs:#{uuid}", "json", graph_json[:json]
-    redis.hset "graphs:#{uuid}", "updated_at", Time.now.to_i
-    redis.hset "graphs:#{uuid}", "url", graph_json[:url]
-    redis.zadd "graphs", Time.now.to_i, uuid
+    aka = set_aka(graph_json, uuid)
+
+    redis.hset("graphs:#{uuid}", "title", graph_json[:title])
+    redis.hset("graphs:#{uuid}", "json", graph_json[:json])
+    redis.hset("graphs:#{uuid}", "updated_at", Time.now.to_i)
+    redis.hset("graphs:#{uuid}", "url", graph_json[:url])
+    redis.hset("graphs:#{uuid}", "aka", aka)
+
+    redis.zadd("graphs", Time.now.to_i, uuid)
+
     uuid
   end
 
-  def self.find(uuid)
-    h = redis.hgetall "graphs:#{uuid}"
-    h['uuid']      = uuid
-    h['snapshots'] = redis.zrange "graphs:#{uuid}:snapshots", 0, -1
-    h
+  def self.set_aka(graph_json, uuid)
+    aka = graph_json[:title].downcase.gsub(/\s/, "-")
+
+    lua = <<-EOF
+      if redis.call("exists", KEYS[1]) == 1 then
+        return redis.call("get", KEYS[1]) == ARGV[1]
+      else
+        return redis.call("set", KEYS[1], ARGV[1])
+      end
+    EOF
+
+    if !redis.eval(lua, :keys => ["graphs:aka:#{aka}"], :argv => [uuid])
+      # Should be safe to clobber here because it has our uuid
+      aka = "#{uuid}-#{aka}"
+      redis.set("graphs:aka:#{aka}", uuid)
+    end
+
+    if graph_json[:aka] && graph_json[:aka] != aka
+      # Clean up if the aka has changed
+      redis.del("graphs:aka:#{graph_json[:aka]}")
+    end
+
+    aka
+  end
+
+  def self.find(id)
+    hsh = redis.hgetall("graphs:#{id}")
+
+    if hsh.empty?
+      # Try to get the graph by aka
+      aka = id.downcase.gsub(/\s/, "-")
+      id = redis.get("graphs:aka:#{aka}")
+      hsh = redis.hgetall("graphs:#{id}")
+    end
+
+    hsh["uuid"] = id
+    hsh["snapshots"] = redis.zrange("graphs:#{id}:snapshots", 0, -1)
+
+    hsh
   rescue
     nil
   end
