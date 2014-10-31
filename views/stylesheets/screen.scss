@@ -87,7 +87,6 @@ body.bp {
     li {
       &.graph-edit {
         @include border;
-        @include column(6);
         form {
           float: left;
           padding-right: 5px;
@@ -112,7 +111,7 @@ body.bp {
     font-size: 12px;
   }
   select[name=snapshot] {
-    width: 190px;
+    width: 20ch;
   }
   h4 {
     @include fancy-font;
