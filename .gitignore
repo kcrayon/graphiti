@@ -2,6 +2,7 @@
 .sass-cache*
 **/.DS_Store
 config/settings.yml
+config/settings.erb.yml
 config/amazon_s3.yml
 .bundle/config
 public/images/snapshots
