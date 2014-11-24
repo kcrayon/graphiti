@@ -28,7 +28,7 @@ class Graphiti < Sinatra::Base
 
   register Sinatra::Contrib
 
-  config_file 'config/settings.yml'
+  config_file 'config/settings.yml', 'config/settings.erb.yml'
 
   configure do
     set :logging, true
