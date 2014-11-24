@@ -23,7 +23,7 @@ time_frames:
 default_options:
   title: "New Graph"
   from: -7d
-  font: DroidSans
+  fontName: DroidSans
   fontSize: 10
   thickness: 2
   bgcolor: "#FFFFFF"
